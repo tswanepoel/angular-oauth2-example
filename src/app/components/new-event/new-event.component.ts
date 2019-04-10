@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { CalendarEvent } from '../../models/calendar-event';
 import { GraphApiService } from 'src/app/services/graph-api.service';
 
@@ -24,7 +24,7 @@ export class NewEventComponent {
     });
   }
 
-  get subject() {
+  get subject(): AbstractControl {
     return this.eventForm.get('subject');
   }
 

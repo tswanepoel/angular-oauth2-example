@@ -43,7 +43,7 @@ export class AppComponent {
 
   public get name() {
     const claims = this.oauthService.getIdentityClaims();
-    
+
     if (!claims) {
       return null;
     }

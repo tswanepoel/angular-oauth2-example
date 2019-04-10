@@ -1,0 +1,9 @@
+<form id="event-form" [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label>Subject</label>
+    <input class="form-control" formControlName="subject">
+    <span *ngIf="subject.invalid">Subject is invalid.</span>
+  </div>
+
+  <button type="submit" [disabled]="!eventForm.valid">Save</button>
+</form>

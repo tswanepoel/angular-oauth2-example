@@ -10,11 +10,12 @@ import { Profile } from 'src/app/models/profile';
 })
 export class ProfileComponent implements OnInit {
 
-  profile: Observable<Profile>;
+  profile$: Observable<Profile>;
+
   constructor(private graphApi: GraphApiService) { }
 
   ngOnInit() {
-    this.profile = this.graphApi.getProfile();
+    this.profile$ = this.graphApi.getProfile();
   }
 
 }

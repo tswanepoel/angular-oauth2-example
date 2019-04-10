@@ -1,15 +1,27 @@
 import { TestBed, async } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientModule } from '@angular/common/http';
+import { OAuthModule } from 'angular-oauth2-oidc';
+
 import { AppComponent } from './app.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { NewEventComponent } from './components/new-event/new-event.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        RouterTestingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        OAuthModule.forRoot()
       ],
       declarations: [
-        AppComponent
+        AppComponent,
+        ProfileComponent,
+        NewEventComponent
       ],
     }).compileComponents();
   }));

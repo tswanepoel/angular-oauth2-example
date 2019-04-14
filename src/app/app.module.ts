@@ -2,19 +2,20 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { OAuthModule } from 'angular-oauth2-oidc';
+import { AlertModule } from 'ngx-bootstrap';
+
+import { TokenInterceptor } from './interceptors/token-interceptor';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
-import { ProfileComponent } from './components/profile/profile.component';
 import { NewEventComponent } from './components/new-event/new-event.component';
-import { TokenInterceptor } from './interceptors/token-interceptor';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ProfileComponent,
+    DashboardComponent,
     NewEventComponent
   ],
   imports: [
@@ -23,7 +24,9 @@ import { TokenInterceptor } from './interceptors/token-interceptor';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    OAuthModule.forRoot()
+    FontAwesomeModule,
+    OAuthModule.forRoot(),
+    AlertModule.forRoot()
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

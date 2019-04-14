@@ -1,19 +1,30 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { JwksValidationHandler } from 'angular-oauth2-oidc';
+import { faMicrosoft } from '@fortawesome/free-brands-svg-icons';
 import { authConfig } from '../auth-config';
 import openIdConfig from '../openid-config.json';
 import openIdConfigKeys from '../openid-config.keys.json';
+import { GraphApiService } from 'src/app/services/graph-api.service';
+import { Profile } from 'src/app/models/profile';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  title = 'OfficeApp';
+export class AppComponent implements OnInit {
 
-  constructor(private oauthService: OAuthService) {
+  title = 'OfficeApp';
+  icon = faMicrosoft;
+
+  mail: string;
+  photoUrl: string;
+
+  constructor(
+    private oauthService: OAuthService,
+    private graphApiService: GraphApiService) {
+
     const config = openIdConfig as any;
 
     Object.assign(authConfig, {
@@ -30,24 +41,54 @@ export class AppComponent {
 
     this.oauthService.configure(authConfig);
     this.oauthService.tokenValidationHandler = new JwksValidationHandler();
+
+    this.oauthService.events.subscribe(e => {
+      this.onIdentityClaimsChanged();
+    });
+
     this.oauthService.tryLogin();
   }
 
-  public login(): void {
+  ngOnInit(): void {
+    this.onIdentityClaimsChanged();
+  }
+
+  login(): void {
     this.oauthService.initImplicitFlow();
   }
 
-  public logOut() {
+  logOut(): void {
     this.oauthService.logOut();
   }
 
-  public get name() {
+  get sub() { return this.getClaimValue('sub'); }
+  get name() { return this.getClaimValue('name'); }
+
+  private onIdentityClaimsChanged(): void {
+
+    console.log(this.oauthService.getIdentityClaims());
+
+    if (!this.sub) {
+      this.photoUrl = null;
+      return;
+    }
+
+    this.graphApiService.getProfile().subscribe(profile => {
+      this.mail = profile.mail;
+
+      this.photoUrl = this.mail
+        ? `https://outlook.office365.com/owa/service.svc/s/GetPersonaPhoto?email=${this.mail}&UA=0&size=HR64x64`
+        : null;
+    });
+  }
+
+  private getClaimValue(name) {
     const claims = this.oauthService.getIdentityClaims();
 
     if (!claims) {
       return null;
     }
 
-    return (claims as any).name;
+    return claims[name];
   }
 }

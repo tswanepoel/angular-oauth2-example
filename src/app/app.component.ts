@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { JwksValidationHandler } from 'angular-oauth2-oidc';
 import { faMicrosoft } from '@fortawesome/free-brands-svg-icons';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { authConfig } from '../auth-config';
 import openIdConfig from '../openid-config.json';
 import openIdConfigKeys from '../openid-config.keys.json';
 import { GraphApiService } from 'src/app/services/graph-api.service';
-import { Profile } from 'src/app/models/profile';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +16,9 @@ import { Profile } from 'src/app/models/profile';
 export class AppComponent implements OnInit {
 
   title = 'OfficeApp';
-  icon = faMicrosoft;
+  appIcon = faMicrosoft;
+  menuIcon = faBars;
+  isCollapsed = true;
 
   mail: string;
   photoUrl: string;
@@ -66,8 +68,6 @@ export class AppComponent implements OnInit {
 
   private onIdentityClaimsChanged(): void {
 
-    console.log(this.oauthService.getIdentityClaims());
-
     if (!this.sub) {
       this.photoUrl = null;
       return;
@@ -77,7 +77,7 @@ export class AppComponent implements OnInit {
       this.mail = profile.mail;
 
       this.photoUrl = this.mail
-        ? `https://outlook.office365.com/owa/service.svc/s/GetPersonaPhoto?email=${this.mail}&UA=0&size=HR64x64`
+        ? `https://outlook.office.com/owa/service.svc/s/GetPersonaPhoto?email=${this.mail}&UA=0&size=HR64x64`
         : null;
     });
   }

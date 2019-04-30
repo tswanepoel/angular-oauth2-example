@@ -1,20 +1,39 @@
-<header>
-  <nav class="navbar navbar-light bg-light">
-    <a class="navbar-brand" href="#">
-      <fa-icon [icon]="icon"></fa-icon>
-      Office 365
-    </a>
+<div class="h-100 d-flex flex-column">
+  <header>
+    <nav class="navbar navbar-expand-sm navbar-light bg-light">
+      <a class="navbar-brand" href="#">
+        <fa-icon [icon]="appIcon"></fa-icon>
+        Office 365
+      </a>
 
-    <ul class="nav navbar-nav navbar-right">
-      <button *ngIf="!sub; else loggedIn" class="btn btn-primary" (click)="login()">Sign in</button>
-      
-      <ng-template #loggedIn>
-        <img *ngIf="photoUrl" class="profile-pic" [src]="photoUrl" [title]="name" width="36px" height="36px">
-      </ng-template>
-    </ul>
-  </nav>
-</header>
+      <button type="button" class="navbar-toggler collapsed" (click)="isCollapsed = !isCollapsed" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <fa-icon [icon]="menuIcon"></fa-icon>
+      </button>
 
-<main>
-  <router-outlet></router-outlet>
-</main>
+      <div class="collapse navbar-collapse" [collapse]="isCollapsed">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="" (click)="isCollapsed = true">Dashboard</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/contacts" (click)="isCollapsed = true">Contacts</a>
+          </li>
+        </ul>
+
+        <ul class="navbar-nav navbar-right">
+          <button *ngIf="!sub; else loggedIn" class="btn btn-primary" (click)="login()">Sign in</button>
+          
+          <ng-template #loggedIn>
+            <img *ngIf="photoUrl" class="d-none d-sm-block profile-pic" [src]="photoUrl" [title]="name" width="36px" height="36px">
+          </ng-template>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main class="flex-grow-1">
+    <router-outlet></router-outlet>
+  </main>
+</div>

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Profile } from '../models/profile';
+import { ODataResponse } from '../models/odata-response';
 import { User } from '../models/user';
 import { CalendarEvent } from '../models/calendar-event';
 
@@ -19,16 +19,22 @@ export class GraphApiService {
     return this.http.get<Profile>(`${environment.graphApiBaseUrl}/me`);
   }
 
-  getUsers(): Observable<User[]> {
-    return this.http
-      .get(`${environment.graphApiBaseUrl}/users`)
-      .pipe(map(x => (x as any).value));
+  getUsers(top?: number): Observable<ODataResponse<User[]>> {
+    let queryString = '?$orderby=displayName';
+
+    if (top) {
+      queryString += `${queryString ? '&' : '?'}$top=${top}`;
+    }
+
+    return this.getNextUsers(`${environment.graphApiBaseUrl}/users${queryString}`);
   }
 
-  getEvents(): Observable<CalendarEvent[]> {
-    return this.http
-      .get(`${environment.graphApiBaseUrl}/me/events`)
-      .pipe(map(x => (x as any).value));
+  getNextUsers(nextLink: string): Observable<ODataResponse<User[]>> {
+    return this.http.get<ODataResponse<User[]>>(nextLink);
+  }
+
+  getEvents(): Observable<ODataResponse<CalendarEvent[]>> {
+    return this.http.get<ODataResponse<CalendarEvent[]>>(`${environment.graphApiBaseUrl}/me/events`);
   }
 
   createEvent(event: CalendarEvent) {

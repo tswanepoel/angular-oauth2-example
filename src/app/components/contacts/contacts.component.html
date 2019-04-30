@@ -1,0 +1,9 @@
+<h5>Contacts</h5>
+
+<div *ngIf="loading$ | async" class="spinner-border" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
+
+<ul class="list-unstyled">
+  <li *ngFor="let user of users$ | async">{{ user.displayName }}</li>
+</ul>

@@ -6,7 +6,7 @@ import { GraphApiService } from 'src/app/services/graph-api.service';
 @Component({
   selector: 'app-new-event',
   templateUrl: './new-event.component.html',
-  styleUrls: ['./new-event.component.sass']
+  styleUrls: ['./new-event.component.scss']
 })
 export class NewEventComponent {
 

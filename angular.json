@@ -136,5 +136,10 @@
       }
     }
   },
-  "defaultProject": "OfficeApp"
+  "defaultProject": "OfficeApp",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
+  }
 }
